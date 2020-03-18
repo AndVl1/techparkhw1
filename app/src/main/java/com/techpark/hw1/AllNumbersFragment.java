@@ -6,6 +6,8 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -14,10 +16,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-
-import java.util.ArrayList;
-import java.util.List;
-
 
 /**
  * A simple {@link Fragment} subclass.
@@ -29,6 +27,7 @@ public class AllNumbersFragment extends Fragment {
     private final int P_COLM = 3;
     private final int L_COLM = 4;
     private Adapter numAdapter;
+    private OnItemSelectedListener callback;
 
 
     @Override
@@ -74,6 +73,18 @@ public class AllNumbersFragment extends Fragment {
     public void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putInt("max", current);
+    }
+
+
+
+    void setOnItemSelectedListener(OnItemSelectedListener callback){
+        Log.d("ATTACH", "setOn...Listener");
+        this.callback = callback;
+        Log.d("ATTACH", (this.callback == null) ? "null" : "not null");
+    }
+
+    public interface OnItemSelectedListener{
+        void onItemSelected(int pos, int color);
     }
 
     private class Adapter extends RecyclerView.Adapter<Holder>{
@@ -125,13 +136,8 @@ public class AllNumbersFragment extends Fragment {
                     if (getActivity() == null) {
                         return;
                     }
-                    Bundle bundle = new Bundle();
-                    bundle.putInt("number", Integer.parseInt(((TextView) v).getText().toString()));
-                    bundle.putInt("color", ((TextView) v).getCurrentTextColor());
-                    Log.d("BUNDLE", ((TextView) v).getCurrentTextColor() + " " + ((TextView) v).getText().toString());
-                    Fragment fr = new NumberFullscreenFragment();
-                    fr.setArguments(bundle);
-                    getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.main_frame, fr).addToBackStack(null).commit();
+                    Log.d("SET CALLBACK", callback == null ? "null" : "not null");
+                    callback.onItemSelected(Integer.parseInt(((TextView) v).getText().toString()), ((TextView) v).getCurrentTextColor());
                 }
             });
         }

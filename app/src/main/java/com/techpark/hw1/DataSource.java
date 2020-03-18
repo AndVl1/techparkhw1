@@ -10,24 +10,24 @@ public class DataSource {
     private final List<NumData> mData;
     private static DataSource sInstance;
 
-    public DataSource() {
+    DataSource() {
         mData = new ArrayList<>();
         for (int i = 0; i < 100; i++){
             mData.add(new NumData(i+1));
         }
     }
 
-    public NumData get(int i) {
+    NumData get(int i) {
         return mData.get(i);
     }
 
-    public void add(){
+    void add(){
         mData.add(new NumData(mData.get(mData.size() - 1).mNumber + 1));
     }
     public List<NumData> getData() {
         return mData;
     }
-    public int size() {
+    int size() {
         return mData.size();
     }
 
@@ -43,16 +43,16 @@ public class DataSource {
         private int mColor;
         private final static int ODD = Color.RED;
         private final static int EVEN = Color.BLUE;
-        public NumData(int number){
+        NumData(int number){
             this.mNumber = number;
             this.mColor = number % 2 == 0 ? ODD : EVEN;
         }
 
-        public int getNumber() {
+        int getNumber() {
             Log.d("GET", String.valueOf(mNumber));
             return mNumber;
         }
-        public int getColor() {
+        int getColor() {
             return mColor;
         }
 //        public void setNumber(int number) {
